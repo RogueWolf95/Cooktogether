@@ -23,10 +23,10 @@ class DiscordBot(commands.Bot):
         self.settings = None
 
         print("bot running")
+        self.load_cogs()
 
 
-        #self.add_listener(self.on_ready)
-        #self.add_listener(self.on_member_join)
-        #self.add_listener(self.on_member_remove)
-        #self.add_listener(self.on_message)
-        #self.add_listener(self.on_command_error)
+    def load_cogs(self):
+        all_extensions = [i.removesuffix(".py") for i in os.listdir("src/discord/cogs") if i.endswith(".py")]
+        for extension in all_extensions:
+            self.load_extension(f"src.discord.cogs.{extension}")

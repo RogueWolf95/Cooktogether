@@ -3,6 +3,8 @@ from os import getenv
 
 from src.discord.bot import DiscordBot
 
+
+
 def main():
     load_dotenv()
     bot = DiscordBot()
