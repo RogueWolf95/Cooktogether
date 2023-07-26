@@ -1,0 +1,22 @@
+Part 1: List the Ingredients for a serving count of 2
+- 2 cups of chicken broth
+- 1/4 cup of finely diced onion
+- 1/4 cup of finely diced carrot
+- 1/4 cup of finely diced celery
+- 1 garlic clove, minced
+- 1/4 teaspoon of dried thyme
+- 1 bay leaf
+- Salt and pepper to taste
+- Fresh parsley, for garnish (optional)
+
+Part 2: Write the concise Instructions
+1. In a large saucepan, combine the chicken broth, onion, carrot, celery, garlic, thyme, and bay leaf.
+2. Bring the mixture to a boil over medium heat, then reduce the heat to low and let it simmer for 30 minutes.
+3. After simmering, strain the consommé through a fine-mesh sieve or cheesecloth to remove the solids. Season with salt and pepper to taste.
+4. Serve the consommé hot, garnished with fresh parsley if desired.
+
+Part 3: Provide a short Description of the final dish
+Consommé is a clear and flavorful soup made by simmering a flavorful broth and then clarifying it. It is a light and delicate dish often served as a starter or palate cleanser before a main course.
+
+Part 4: Provide an integer value between one and ten to indicate the spice factor
+0 (Consommé is traditionally not spicy)

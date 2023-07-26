@@ -27,6 +27,9 @@ class DiscordBot(commands.Bot):
 
 
     def load_cogs(self):
-        all_extensions = [i.removesuffix(".py") for i in os.listdir("src/discord/cogs") if i.endswith(".py")]
-        for extension in all_extensions:
-            self.load_extension(f"src.discord.cogs.{extension}")
+        all_extension_folders = [i for i in os.listdir("src/discord/cogs")]
+
+        for folder in all_extension_folders:
+            cogs = [i.removesuffix(".py") for i in os.listdir(f"src/discord/cogs/{folder}") if i.endswith(".py")]
+            for extension in cogs:
+                self.load_extension(f"src.discord.cogs.{folder}.{extension}")

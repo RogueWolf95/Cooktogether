@@ -1,0 +1,26 @@
+Part 1: List the Ingredients for a serving count of 2
+- 4 flour tortillas
+- 1 pound ground beef
+- 1 ghost pepper, finely chopped
+- 1/2 cup diced tomatoes
+- 1/4 cup diced red onion
+- 1/4 cup chopped cilantro
+- 2 tablespoons lime juice
+- 1 tablespoon vegetable oil
+- Salt and pepper to taste
+
+Part 2: Write the concise Instructions
+1. In a skillet, heat the vegetable oil over medium heat.
+2. Add the ground beef and ghost pepper to the skillet and cook until the beef is browned and cooked through.
+3. Season the beef with salt and pepper to taste.
+4. In a separate bowl, combine the diced tomatoes, red onion, cilantro, and lime juice.
+5. Warm the flour tortillas in a separate skillet or in the microwave.
+6. Assemble the tacos by placing a generous portion of the ground beef mixture onto each tortilla.
+7. Top with the tomato and onion mixture.
+8. Serve immediately and enjoy!
+
+Part 3: Provide a short Description of the final dish
+Flamin Hot Ghost Pepper Tacos are a spicy and flavorful twist on traditional tacos. The combination of the fiery ghost pepper with the savory ground beef and fresh toppings creates a mouthwatering and unforgettable meal.
+
+Part 4: Provide an integer value between one and ten to indicate the spice factor
+8
