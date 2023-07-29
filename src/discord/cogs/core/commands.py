@@ -20,6 +20,12 @@ class CoreCog(commands.Cog):
         """Kill the bot, requiring a manual reboot."""
         await interaction.send(f"Shutdown command sent from {interaction.user}")
         await self.bot.close()
+        
+    @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="test", description="Kill the bot")
+    async def test(self, interaction: nextcord.Interaction,user_input:str) -> None:
+        print("WARNING", f"{interaction.user.name} used AdminCog.bot_shutdown at {datetime.datetime.now()}")
+        """Kill the bot, requiring a manual reboot."""
+        await interaction.send(user_input)
 
 
 
