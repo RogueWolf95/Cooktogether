@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS User(
     Handle TEXT NOT NULL,
     RegDate DATE NOT NULL,
     Email TEXT,
-    isOver21 BOOLEAN
+    is21 BOOLEAN
 );
 
 -- Create table "Ingredient"

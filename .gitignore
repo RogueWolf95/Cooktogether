@@ -6,5 +6,4 @@
 /.env
 /.vs
 /.vscode
-/src/discord/cogs/openAI
 __pycache__/
