@@ -27,6 +27,12 @@ class CoreCog(commands.Cog):
         """Kill the bot, requiring a manual reboot."""
         await interaction.send(user_input)
 
+    @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="rate", description="Rate a recipe")
+    async def rate(self, interaction: nextcord.Interaction, recipe_name: str, rating: int) -> None:
+        print("INFO", f"{interaction.user.name} rated {recipe_name} with {rating} stars at {datetime.datetime.now()}")
+        """Kill the bot, requiring a manual reboot."""
+        await interaction.send(f"Thank you for rating {recipe_name} with {rating} stars!")
+
 
 
 def setup(bot: commands.Bot):
