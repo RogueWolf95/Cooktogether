@@ -64,6 +64,7 @@ class CoreCog(commands.Cog):
             nextcord.Option(name="to_unit", description="Unit to convert to", type=nextcord.OptionType.STRING, required=True)
         ]
     )
+
     async def convert(self, interaction: nextcord.Interaction, amount: float, from_unit: str, to_unit: str) -> None:
         print("WARNING", f"{interaction.user.name} used AdminCog.convert at {datetime.datetime.now()}")
         """Convert measurements between units."""
@@ -83,12 +84,13 @@ class CoreCog(commands.Cog):
             ("teaspoons", "tablespoons"): lambda x: x / 3,
             ("tablespoons", "teaspoons"): lambda x: x * 3,
         }
-        conversion_func = conversions.get((from_unit, to_unit))
-        if conversion_func:
-            converted_amount = conversion_func(amount)
-            return converted_amount
-        else:
-            return None
+
+    conversion_func = conversions.get((from_unit, to_unit))
+    if conversion_func:
+        converted_amount = conversion_func(amount)
+        return converted_amount
+    else:
+        raise ValueError("Conversion error.")
 
     # =====================================================================================================
 
