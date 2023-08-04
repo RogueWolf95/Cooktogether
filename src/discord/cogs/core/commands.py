@@ -20,11 +20,19 @@ class CoreCog(commands.Cog):
         """Kill the bot, requiring a manual reboot."""
         await interaction.send(f"Shutdown command sent from {interaction.user}")
         await self.bot.close()
-        
-    @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="test", description="Kill the bot")
+    
+    # =====================================================================================================    
+    @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="test", description="Test command")
     async def test(self, interaction: nextcord.Interaction,user_input:str) -> None:
-        print("WARNING", f"{interaction.user.name} used AdminCog.bot_shutdown at {datetime.datetime.now()}")
-        """Kill the bot, requiring a manual reboot."""
+        print("WARNING", f"{interaction.user.name} used AdminCog.test at {datetime.datetime.now()}")
+        """Test command."""
+        await interaction.send(user_input)
+
+    # =====================================================================================================    
+    @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="valhalla", description="Valhalla test command")
+    async def valhalla(self, interaction: nextcord.Interaction,user_input:str) -> None:
+        print("WARNING", f"{interaction.user.name} used AdminCog.valhalla test at {datetime.datetime.now()}")
+        """Valhalla test command."""
         await interaction.send(user_input)
 
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="rate", description="Rate a recipe")
