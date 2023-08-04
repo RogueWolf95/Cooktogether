@@ -41,6 +41,8 @@ class CoreCog(commands.Cog):
         """Kill the bot, requiring a manual reboot."""
         await interaction.send(f"Thank you for rating {recipe_name} with {rating} stars!")
 
+        
+
 
 
 def setup(bot: commands.Bot):
