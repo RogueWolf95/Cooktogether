@@ -57,24 +57,13 @@ class CoreCog(commands.Cog):
         await interaction.send(user_input)
         
     # =====================================================================================================
-    def perform_unit_conversion(self, amount: float, from_unit: str, to_unit: str) -> Optional[float]:
-        conversions = {
-            ("grams", "ounces"): lambda x: x * 0.03527396,
-            ("ounces", "grams"): lambda x: x / 0.03527396,
-            ("cups", "milliliters"): lambda x: x * 236.588,
-            ("milliliters", "cups"): lambda x: x / 236.588,
-            ("teaspoons", "tablespoons"): lambda x: x / 3,
-            ("tablespoons", "teaspoons"): lambda x: x * 3,
-        }
-
-        conversion_func = conversions.get((from_unit, to_unit))
-        if conversion_func:
-            converted_amount = conversion_func(amount)
-            return converted_amount
-        else:
-            return None
-
-    @nextcord.slash_command(dm_permission=False, name="convert", description="Convert measurements between units")
+    @nextcord.slash_command(dm_permission=False,name="convert",description="Convert measurements between units",
+        options=[
+            nextcord.Option(name="amount", description="Amount to convert", type=nextcord.OptionType.FLOAT, required=True),
+            nextcord.Option(name="from_unit", description="Unit to convert from", type=nextcord.OptionType.STRING, required=True),
+            nextcord.Option(name="to_unit", description="Unit to convert to", type=nextcord.OptionType.STRING, required=True)
+        ]
+    )
     async def convert(self, interaction: nextcord.Interaction, amount: float, from_unit: str, to_unit: str) -> None:
         print("WARNING", f"{interaction.user.name} used AdminCog.convert at {datetime.datetime.now()}")
         """Convert measurements between units."""
@@ -84,6 +73,22 @@ class CoreCog(commands.Cog):
         else:
             response = "Unsupported units or conversion error."
         await interaction.send(response)
+
+    def perform_unit_conversion(self, amount: float, from_unit: str, to_unit: str) -> Optional[float]:
+        conversions = {
+            ("grams", "ounces"): lambda x: x * 0.03527396,
+            ("ounces", "grams"): lambda x: x / 0.03527396,
+            ("cups", "milliliters"): lambda x: x * 236.588,
+            ("milliliters", "cups"): lambda x: x / 236.588,
+            ("teaspoons", "tablespoons"): lambda x: x / 3,
+            ("tablespoons", "teaspoons"): lambda x: x * 3,
+        }
+        conversion_func = conversions.get((from_unit, to_unit))
+        if conversion_func:
+            converted_amount = conversion_func(amount)
+            return converted_amount
+        else:
+            return None
 
     # =====================================================================================================
 
