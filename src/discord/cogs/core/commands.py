@@ -1,8 +1,8 @@
 from nextcord.ext import commands
 import nextcord
 import datetime
+import re
 from src.discord.bot import DiscordBot
-
 
 # =====================================================================================================
 class RegisterModal(nextcord.ui.Modal):
@@ -19,8 +19,7 @@ class CoreCog(commands.Cog):
         self.bot: DiscordBot = bot
         self.name = "Admin Commands"
         print("CoreCog connected")
-        
- 
+
         self.conversion_rates = {
             "grams_to_ounces": 0.035274,
             "ounces_to_grams": 28.3495,
@@ -30,45 +29,49 @@ class CoreCog(commands.Cog):
             "teaspoons_to_cups": 0.0208333,
             "cups_to_tablespoons": 16,
             "tablespoons_to_cups": 0.0625,
-
         }
 
-# =====================================================================================================
+    # =================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="kill", description="Kill the bot")
     async def bot_shutdown(self, interaction: nextcord.Interaction) -> None:
         print("WARNING", f"{interaction.user.name} used AdminCog.bot_shutdown at {datetime.datetime.now()}")
+         """Kill the bot"""
         await interaction.send(f"Shutdown command sent from {interaction.user}")
         await self.bot.close()
 
-# =====================================================================================================
+    # =================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="test", description="Test command")
     async def test(self, interaction: nextcord.Interaction,user_input:str) -> None:
         print("WARNING", f"{interaction.user.name} used AdminCog.test at {datetime.datetime.now()}")
+         """Test command"""
         await interaction.send(user_input)
 
-# =====================================================================================================
+    # =================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="valhalla", description="Valhalla test command")
     async def valhalla(self, interaction: nextcord.Interaction,user_input:str) -> None:
         print("WARNING", f"{interaction.user.name} used AdminCog.valhalla test at {datetime.datetime.now()}")
+         """Test command"""
         await interaction.send(user_input)
 
-# =====================================================================================================
+    # =================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="rate", description="Rate a recipe")
     async def rate(self, interaction: nextcord.Interaction, user_input: str) -> None:
         print("WARNING", f"{interaction.user.name} usedAdminCog.rated at {datetime.datetime.now()}")
+         """Rate a Recipe"""
         await interaction.send(user_input)
 
-# =====================================================================================================
+    # =================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="favorites", description="Favorite Recipes")
     async def favorite(self, interaction: nextcord.Interaction, user_input: str) -> None:
         print("WARNING", f"{interaction.user.name} usedAdminCog.Favorite Recipes at {datetime.datetime.now()}")
+         """Favorite Recipes"""
         await interaction.send(user_input)
 
-# =====================================================================================================
+    # =================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="convert", description="Convert a value from one unit to another")
     async def convert(self, interaction: nextcord.Interaction, value: float, from_unit: str, to_unit: str) -> None:
         print("WARNING", f"{interaction.user.name} used CoreCog.convert at {datetime.datetime.now()}")
-        
+
         from_unit = from_unit.lower()
         to_unit = to_unit.lower()
 
@@ -76,19 +79,45 @@ class CoreCog(commands.Cog):
 
         if conversion_key in self.conversion_rates:
             converted_value = value * self.conversion_rates[conversion_key]
-            await interaction.send(f"{value} {from_unit} is {converted_value} {to_unit}")
+            embed = nextcord.Embed(title="Conversion Result", description=f"{value} {from_unit} is {converted_value} {to_unit}", color=nextcord.Color.blurple())
+            await interaction.send(embed=embed)
         else:
             await interaction.send(f"Sorry, I can't convert from {from_unit} to {to_unit}.")
 
-# =====================================================================================================
+    def convert_measurements_in_recipe(self, recipe, to_unit):
+        conversions = [
+            ("grams", "ounces", 0.035274),
+            ("ounces", "grams", 28.3495),
+            ("teaspoons", "tablespoons", 0.333333),
+            ("tablespoons", "teaspoons", 3),
+            ("cups", to_unit, 16),  # Convert "cups" to the provided to_unit
+        ]
+
+        for from_unit, dest_unit, conversion_rate in conversions:
+            pattern = f"([0-9.]+) {from_unit}"
+            replacement = lambda match: f"{float(match.group(1)) * conversion_rate} {dest_unit}"
+            recipe = re.sub(pattern, replacement, recipe)
+
+        return recipe
+
+    @nextcord.slash_command(dm_permission=False, name="convert_recipe", description="Convert all measurements in a recipe")
+    async def convert_recipe(self, interaction: nextcord.Interaction, *, recipe_and_unit: str) -> None:
+        print("WARNING", f"{interaction.user.name} used CoreCog.convert_recipe at {datetime.datetime.now()}")
+
+        recipe, to_unit = map(str.strip, recipe_and_unit.split(":"))
+
+        converted_recipe = self.convert_measurements_in_recipe(recipe, to_unit)
+
+        embed = nextcord.Embed(title="Converted Recipe", description=converted_recipe, color=nextcord.Color.blurple())
+        await interaction.send(embed=embed)
+
+  # =================================================================================================
     @nextcord.slash_command(dm_permission=False, name="register", description="Register to the bot for our newsletter")
     async def register(self, interaction: nextcord.Interaction) -> None:
         print("WARNING", f"{interaction.user.name} used AdminCog.register at {datetime.datetime.now()}")
+         """Register to the bot for our newsletter"""
         await interaction.response.send_modal(modal=RegisterModal())
 
 # =====================================================================================================
-
-
 def setup(bot: commands.Bot):
     bot.add_cog(CoreCog(bot))
-
