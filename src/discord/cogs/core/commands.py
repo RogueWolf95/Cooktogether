@@ -1,7 +1,6 @@
 from nextcord.ext import commands
 import nextcord
 import datetime
-from typing import Optional
 from src.discord.bot import DiscordBot
 
 
