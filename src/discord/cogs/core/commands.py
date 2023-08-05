@@ -26,7 +26,7 @@ class CoreCog(commands.Cog):
         print("WARNING", f"{interaction.user.name} used AdminCog.bot_shutdown at {datetime.datetime.now()}")
         await interaction.send(f"Shutdown command sent from {interaction.user}")
         await self.bot.close()
-        
+
 # =====================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="test", description="Test command")
     async def test(self, interaction: nextcord.Interaction,user_input:str) -> None:
@@ -51,7 +51,6 @@ class CoreCog(commands.Cog):
         await interaction.send(user_input)
 
 # =====================================================================================================
-
     @nextcord.slash_command(dm_permission=False,name="convert",description="Convert measurements between units",
         options=[
             nextcord.Option(name="amount", description="Amount to convert", type=nextcord.OptionType.FLOAT, required=True),
@@ -68,7 +67,7 @@ class CoreCog(commands.Cog):
             response = "Unsupported units or conversion error."
         await interaction.send(response)
 
-    def perform_unit_conversion(self, amount: float, from_unit: str, to_unit: str) -> Optional[float]:
+    def perform_unit_conversion(self, amount: float, from_unit: str, to_unit: str) -> float:
         conversions = {
             ("grams", "ounces"): lambda x: x * 0.03527396,
             ("ounces", "grams"): lambda x: x / 0.03527396,
@@ -81,13 +80,16 @@ class CoreCog(commands.Cog):
         conversion_func = conversions.get((from_unit, to_unit))
         if conversion_func:
             return conversion_func(amount)
+        else:
+            return 0.0 
+
 # =====================================================================================================
     @nextcord.slash_command(dm_permission=False, name="register", description="Register to the bot for our newsletter")
     async def register(self, interaction: nextcord.Interaction) -> None:
         print("WARNING", f"{interaction.user.name} used AdminCog.register at {datetime.datetime.now()}")
         await interaction.response.send_modal(modal=RegisterModal())
-# =====================================================================================================
 
+# =====================================================================================================
 
 def setup(bot: commands.Bot):
     bot.add_cog(CoreCog(bot))
