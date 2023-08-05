@@ -1,29 +1,29 @@
 from nextcord.ext import commands
 import nextcord
 import datetime
-from typing import Optional 
-from src.discord.cogs.core.components.sqlite import DBManager
+import inspect
+from typing import Optional
 from src.discord.bot import DiscordBot
+from src.discord.cogs.core.components.modals import register
 
 
 class CoreCog(commands.Cog):
     def __init__(self, bot):
         self.bot: DiscordBot = bot
-        self.db_manager = DBManager('src/discord/cogs/core/components/sql/core.db')
         self.name = "Admin Commands"
         print("CoreCog connected")
 
     # =====================================================================================================
     @nextcord.slash_command(dm_permission=False, name="register", description="Register to the bot for our newsletter")
     async def register(self, interaction: nextcord.Interaction) -> None:
-        print("WARNING", f"{interaction.user.name} used AdminCog.register at {datetime.datetime.now()}")
+        print("INFO", f"{interaction.user.name} used {self}.{inspect.currentframe().f_code.co_name} at {datetime.datetime.now()}")
         """Register to the bot for our newsletter"""
-        await interaction.response.send_modal(modal=RegisterModal())
+        await interaction.response.send_modal(modal=register.RegisterModal())
         
     # =====================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="kill", description="Kill the bot")
     async def bot_shutdown(self, interaction: nextcord.Interaction) -> None:
-        print("WARNING", f"{interaction.user.name} used AdminCog.bot_shutdown at {datetime.datetime.now()}")
+        print("INFO", f"{interaction.user.name} used {self}.{inspect.currentframe().f_code.co_name} at {datetime.datetime.now()}")
         """Kill the bot, requiring a manual reboot."""
         await interaction.send(f"Shutdown command sent from {interaction.user}")
         await self.bot.close()
@@ -31,42 +31,35 @@ class CoreCog(commands.Cog):
     # =====================================================================================================    
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="test", description="Test command")
     async def test(self, interaction: nextcord.Interaction,user_input:str) -> None:
-        print("WARNING", f"{interaction.user.name} used AdminCog.test at {datetime.datetime.now()}")
+        print("INFO", f"{interaction.user.name} used {self}.{inspect.currentframe().f_code.co_name} at {datetime.datetime.now()}")
         """Test command."""
         await interaction.send(user_input)
 
     # =====================================================================================================    
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="valhalla", description="Valhalla test command")
     async def valhalla(self, interaction: nextcord.Interaction,user_input:str) -> None:
-        print("WARNING", f"{interaction.user.name} used AdminCog.valhalla test at {datetime.datetime.now()}")
+        print("INFO", f"{interaction.user.name} used {self}.{inspect.currentframe().f_code.co_name} at {datetime.datetime.now()}")
         """Valhalla test command."""
         await interaction.send(user_input)
         
     # =====================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="rate", description="Rate a recipe")
     async def rate(self, interaction: nextcord.Interaction, user_input: str) -> None:
-        print("WARNING", f"{interaction.user.name} usedAdminCog.rated at {datetime.datetime.now()}")
+        print("INFO", f"{interaction.user.name} used {self}.{inspect.currentframe().f_code.co_name} at {datetime.datetime.now()}")
         """Kill the bot, requiring a manual reboot."""
         await interaction.send(user_input)
         
     # =====================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="Favorites", description="Favorite Recipes")
     async def favorite(self, interaction: nextcord.Interaction, user_input: str) -> None:
-        print("WARNING", f"{interaction.user.name} usedAdminCog.Favorite Recipes at {datetime.datetime.now()}")
+        print("INFO", f"{interaction.user.name} used {self}.{inspect.currentframe().f_code.co_name} at {datetime.datetime.now()}")
         """Kill the bot, requiring a manual reboot."""
         await interaction.send(user_input)
         
     # =====================================================================================================
-    @nextcord.slash_command(dm_permission=False,name="convert",description="Convert measurements between units",
-        options=[
-            nextcord.Option(name="amount", description="Amount to convert", type=nextcord.OptionType.FLOAT, required=True),
-            nextcord.Option(name="from_unit", description="Unit to convert from", type=nextcord.OptionType.STRING, required=True),
-            nextcord.Option(name="to_unit", description="Unit to convert to", type=nextcord.OptionType.STRING, required=True)
-        ]
-    )
-
+    @nextcord.slash_command(dm_permission=False,name="convert",description="Convert measurements between units")
     async def convert(self, interaction: nextcord.Interaction, amount: float, from_unit: str, to_unit: str) -> None:
-        print("WARNING", f"{interaction.user.name} used AdminCog.convert at {datetime.datetime.now()}")
+        print("INFO", f"{interaction.user.name} used {self}.{inspect.currentframe().f_code.co_name} at {datetime.datetime.now()}")
         """Convert measurements between units."""
         converted_amount = self.perform_unit_conversion(amount, from_unit, to_unit)
         if converted_amount is not None:
@@ -85,19 +78,19 @@ class CoreCog(commands.Cog):
             ("tablespoons", "teaspoons"): lambda x: x * 3,
         }
 
-    conversion_func = conversions.get((from_unit, to_unit))
-    if conversion_func:
-        converted_amount = conversion_func(amount)
-        return converted_amount
-    else:
-        raise ValueError("Conversion error.")
+        conversion_func = conversions.get((from_unit, to_unit))
+        if conversion_func:
+            converted_amount = conversion_func(amount)
+            return converted_amount
+        else:
+            raise ValueError("Conversion error.")
 
     # =====================================================================================================
     @nextcord.slash_command(dm_permission=False, name="register", description="Register to the bot for our newsletter")
     async def register(self, interaction: nextcord.Interaction) -> None:
-        print("WARNING", f"{interaction.user.name} used AdminCog.register at {datetime.datetime.now()}")
+        print("INFO", f"{interaction.user.name} used {self}.{inspect.currentframe().f_code.co_name} at {datetime.datetime.now()}")
         """Register to the bot for our newsletter"""
-        await interaction.response.send_modal(modal=RegisterModal())
+        await interaction.response.send_modal(modal=register.RegisterModal())
 
 
 
