@@ -19,6 +19,19 @@ class CoreCog(commands.Cog):
         self.bot: DiscordBot = bot
         self.name = "Admin Commands"
         print("CoreCog connected")
+        
+ 
+        self.conversion_rates = {
+            "grams_to_ounces": 0.035274,
+            "ounces_to_grams": 28.3495,
+            "teaspoons_to_tablespoons": 0.333333,
+            "tablespoons_to_teaspoons": 3,
+            "cups_to_teaspoons": 48,
+            "teaspoons_to_cups": 0.0208333,
+            "cups_to_tablespoons": 16,
+            "tablespoons_to_cups": 0.0625,
+
+        }
 
 # =====================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="kill", description="Kill the bot")
@@ -38,6 +51,7 @@ class CoreCog(commands.Cog):
     async def valhalla(self, interaction: nextcord.Interaction,user_input:str) -> None:
         print("WARNING", f"{interaction.user.name} used AdminCog.valhalla test at {datetime.datetime.now()}")
         await interaction.send(user_input)
+
 # =====================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="rate", description="Rate a recipe")
     async def rate(self, interaction: nextcord.Interaction, user_input: str) -> None:
@@ -45,43 +59,26 @@ class CoreCog(commands.Cog):
         await interaction.send(user_input)
 
 # =====================================================================================================
-    @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="Favorites", description="Favorite Recipes")
+    @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="favorites", description="Favorite Recipes")
     async def favorite(self, interaction: nextcord.Interaction, user_input: str) -> None:
         print("WARNING", f"{interaction.user.name} usedAdminCog.Favorite Recipes at {datetime.datetime.now()}")
         await interaction.send(user_input)
 
 # =====================================================================================================
-    @nextcord.slash_command(dm_permission=False,name="convert",description="Convert measurements between units",
-        options=[
-            nextcord.Option(name="amount", description="Amount to convert", type=nextcord.OptionType.FLOAT, required=True),
-            nextcord.Option(name="from_unit", description="Unit to convert from", type=nextcord.OptionType.STRING, required=True),
-            nextcord.Option(name="to_unit", description="Unit to convert to", type=nextcord.OptionType.STRING, required=True)
-        ]
-    )
-    async def convert(self, interaction: nextcord.Interaction, amount: float, from_unit: str, to_unit: str) -> None:
-        print("WARNING", f"{interaction.user.name} used AdminCog.convert at {datetime.datetime.now()}")
-        converted_amount = self.perform_unit_conversion(amount, from_unit, to_unit)
-        if converted_amount is not None:
-            response = f"{amount} {from_unit} is equal to {converted_amount:.2f} {to_unit}"
-        else:
-            response = "Unsupported units or conversion error."
-        await interaction.send(response)
+    @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="convert", description="Convert a value from one unit to another")
+    async def convert(self, interaction: nextcord.Interaction, value: float, from_unit: str, to_unit: str) -> None:
+        print("WARNING", f"{interaction.user.name} used CoreCog.convert at {datetime.datetime.now()}")
+        
+        from_unit = from_unit.lower()
+        to_unit = to_unit.lower()
 
-    def perform_unit_conversion(self, amount: float, from_unit: str, to_unit: str) -> float:
-        conversions = {
-            ("grams", "ounces"): lambda x: x * 0.03527396,
-            ("ounces", "grams"): lambda x: x / 0.03527396,
-            ("cups", "milliliters"): lambda x: x * 236.588,
-            ("milliliters", "cups"): lambda x: x / 236.588,
-            ("teaspoons", "tablespoons"): lambda x: x / 3,
-            ("tablespoons", "teaspoons"): lambda x: x * 3,
-        }
+        conversion_key = f"{from_unit}_to_{to_unit}"
 
-        conversion_func = conversions.get((from_unit, to_unit))
-        if conversion_func:
-            return conversion_func(amount)
+        if conversion_key in self.conversion_rates:
+            converted_value = value * self.conversion_rates[conversion_key]
+            await interaction.send(f"{value} {from_unit} is {converted_value} {to_unit}")
         else:
-            return 0.0 
+            await interaction.send(f"Sorry, I can't convert from {from_unit} to {to_unit}.")
 
 # =====================================================================================================
     @nextcord.slash_command(dm_permission=False, name="register", description="Register to the bot for our newsletter")
@@ -91,5 +88,7 @@ class CoreCog(commands.Cog):
 
 # =====================================================================================================
 
+
 def setup(bot: commands.Bot):
     bot.add_cog(CoreCog(bot))
+
