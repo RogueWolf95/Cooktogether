@@ -93,6 +93,11 @@ class CoreCog(commands.Cog):
         raise ValueError("Conversion error.")
 
     # =====================================================================================================
+    @nextcord.slash_command(dm_permission=False, name="register", description="Register to the bot for our newsletter")
+    async def register(self, interaction: nextcord.Interaction) -> None:
+        print("WARNING", f"{interaction.user.name} used AdminCog.register at {datetime.datetime.now()}")
+        """Register to the bot for our newsletter"""
+        await interaction.response.send_modal(modal=RegisterModal())
 
 
 
