@@ -62,18 +62,24 @@ class CoreCog(commands.Cog):
         if rating < 1 or rating > 5:
             await interaction.send(" Invalid rating. Please provide a rating between 1 and 5.")
             return
-        if recipe_name not int self.ratings:
+        if recipe_name not in self.ratings:
             self.ratings[recipe_name] = []
         self.ratings[recipe_name].append(rating)
         
         await interaction.send(f" Thank you for submitting '{recipe_name}' with {rating} stars!")
 
     # =================================================================================================
-    @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="favorites", description="Favorite Recipes")
+    @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="favorite_recipe", description="Add a recipe to a favorite list")
     async def favorite(self, interaction: nextcord.Interaction, user_input: str) -> None:
-        print("WARNING", f"{interaction.user.name} usedAdminCog.Favorite Recipes at {datetime.datetime.now()}")
-        """Favorite Recipes"""
-        await interaction.send(user_input)
+        print("WARNING", f"{interaction.user.name} usedCoreCog.favorite_recipes at {datetime.datetime.now()}")
+        
+        if interaction.user.id not in self.favorite_lists:
+            self.favorite_lists[interaction.user.id] = []
+        if recipe_name not in self.favorite_lists[interaction.user.id]:
+            self.favorite_lists[interaction.user.id].append(recipe_name)
+            await interaction.send(f"Added '{recipe_name}' to your favorite recipe list!")
+        else:
+            await interaction.send(f"You already have '{recipe_name}' in your favorite recipe list.")
 
     # =================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="convert", description="Convert a value from one unit to another")
