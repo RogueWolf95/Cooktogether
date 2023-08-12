@@ -36,7 +36,7 @@ class CoreCog(commands.Cog):
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="kill", description="Kill the bot")
     async def bot_shutdown(self, interaction: nextcord.Interaction) -> None:
         print("WARNING", f"{interaction.user.name} used AdminCog.bot_shutdown at {datetime.datetime.now()}")
-         """Kill the bot"""
+        """Kill the bot"""
         await interaction.send(f"Shutdown command sent from {interaction.user}")
         await self.bot.close()
 
@@ -44,28 +44,35 @@ class CoreCog(commands.Cog):
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="test", description="Test command")
     async def test(self, interaction: nextcord.Interaction,user_input:str) -> None:
         print("WARNING", f"{interaction.user.name} used AdminCog.test at {datetime.datetime.now()}")
-         """Test command"""
+        """Test command"""
         await interaction.send(user_input)
 
     # =================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="valhalla", description="Valhalla test command")
     async def valhalla(self, interaction: nextcord.Interaction,user_input:str) -> None:
         print("WARNING", f"{interaction.user.name} used AdminCog.valhalla test at {datetime.datetime.now()}")
-         """Test command"""
+        """Test command"""
         await interaction.send(user_input)
 
     # =================================================================================================
-    @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="rate", description="Rate a recipe")
+    @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="rate_recipe", description="Rate a recipe")
     async def rate(self, interaction: nextcord.Interaction, user_input: str) -> None:
-        print("WARNING", f"{interaction.user.name} usedAdminCog.rated at {datetime.datetime.now()}")
-         """Rate a Recipe"""
-        await interaction.send(user_input)
+        print("WARNING", f"{interaction.user.name} used CoreCog.rate_recipe at {datetime.datetime.now()}")
+        
+        if rating < 1 or rating > 5:
+            await interaction.send(" Invalid rating. Please provide a rating between 1 and 5.")
+            return
+        if recipe_name not int self.ratings:
+            self.ratings[recipe_name] = []
+        self.ratings[recipe_name].append(rating)
+        
+        await interaction.send(f" Thank you for submitting '{recipe_name}' with {rating} stars!")
 
     # =================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="favorites", description="Favorite Recipes")
     async def favorite(self, interaction: nextcord.Interaction, user_input: str) -> None:
         print("WARNING", f"{interaction.user.name} usedAdminCog.Favorite Recipes at {datetime.datetime.now()}")
-         """Favorite Recipes"""
+        """Favorite Recipes"""
         await interaction.send(user_input)
 
     # =================================================================================================
@@ -116,7 +123,7 @@ class CoreCog(commands.Cog):
     @nextcord.slash_command(dm_permission=False, name="register", description="Register to the bot for our newsletter")
     async def register(self, interaction: nextcord.Interaction) -> None:
         print("WARNING", f"{interaction.user.name} used AdminCog.register at {datetime.datetime.now()}")
-         """Register to the bot for our newsletter"""
+        """Register to the bot for our newsletter"""
         await interaction.response.send_modal(modal=RegisterModal())
 
 # =====================================================================================================
