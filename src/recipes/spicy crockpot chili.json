@@ -1,0 +1,28 @@
+{
+    "name": "spicy crockpot chili",
+    "ingredients": [
+        "1 pound ground beef",
+        "1 onion, diced",
+        "3 cloves garlic, minced",
+        "1 can (15 ounces) kidney beans, drained and rinsed",
+        "1 can (15 ounces) black beans, drained and rinsed",
+        "1 can (15 ounces) diced tomatoes",
+        "1 can (6 ounces) tomato paste",
+        "2 cups beef broth",
+        "2 tablespoons chili powder",
+        "1 tablespoon cumin",
+        "1 teaspoon paprika",
+        "1 teaspoon cayenne pepper (adjust to desired spice level)",
+        "Salt and pepper, to taste"
+    ],
+    "instructions": [
+        "1. In a large skillet, cook ground beef over medium heat until browned. Drain excess fat.",
+        "2. Add diced onion and minced garlic to the skillet with the ground beef. Cook for an additional 2-3 minutes, until the onion is translucent.",
+        "3. Transfer the cooked ground beef mixture to a slow cooker.",
+        "4. Add kidney beans, black beans, diced tomatoes, tomato paste, beef broth, chili powder, cumin, paprika, cayenne pepper, salt, and pepper to the slow cooker. Stir well to combine.",
+        "5. Cover the slow cooker and cook on low heat for 6-8 hours, or on high heat for 3-4 hours, until flavors are well-combined and the chili has thickened.",
+        "6. Serve hot and garnish with your favorite toppings, such as shredded cheese, sour cream, diced jalapenos, or chopped cilantro."
+    ],
+    "description": "Spicy crockpot chili is a hearty and flavorful dish made with ground beef, beans, tomatoes, and a variety of spices. It is cooked slowly in a crockpot to allow the flavors to meld together, resulting in a satisfying chili with a kick of spice.",
+    "spice": 7
+}

@@ -1,0 +1,21 @@
+{
+    "name": "chili powder steak",
+    "ingredients": [
+        "2 steaks (preferably ribeye or sirloin)",
+        "2 tablespoons chili powder",
+        "1 teaspoon salt",
+        "1 teaspoon black pepper",
+        "1 tablespoon vegetable oil"
+    ],
+    "instructions": [
+        "1. Preheat your grill or stovetop pan to medium-high heat.",
+        "2. In a small bowl, combine the chili powder, salt, and black pepper.",
+        "3. Rub both sides of each steak with the spice mixture, ensuring an even coating.",
+        "4. Drizzle the vegetable oil over the steaks and massage it into the spices.",
+        "5. Place the steaks on the preheated grill or pan and cook for about 4-5 minutes per side for medium-rare doneness, or adjust the cooking time according to your preference.",
+        "6. Remove the steaks from the heat and let them rest for a few minutes.",
+        "7. Slice the steaks against the grain and serve it hot."
+    ],
+    "description": "Chili powder steak is a flavorful and spicy dish made by rubbing steaks with a blend of chili powder, salt, and black pepper before grilling or pan-searing them. The result is a juicy and tender steak with a delicious kick of heat.",
+    "spice": 6
+}

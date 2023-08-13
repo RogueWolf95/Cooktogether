@@ -1,0 +1,18 @@
+{
+    "name": "peanut butter cookies",
+    "ingredients": [
+        "1 cup of peanut butter",
+        "1 cup of sugar",
+        "1 egg"
+    ],
+    "instructions": [
+        "1. Preheat your oven to 350\u00b0F (180\u00b0C).",
+        "2. In a bowl, mix together the peanut butter, sugar, and egg until well combined.",
+        "3. Take tablespoon-sized portions of dough and roll them into balls. Place the balls on a greased baking sheet, leaving some space between each one.",
+        "4. Use a fork to gently press down on each dough ball, creating a criss-cross pattern.",
+        "5. Bake in the preheated oven for 10-12 minutes, or until the edges are golden brown.",
+        "6. Remove from the oven and let the cookies cool on the baking sheet for a few minutes before transferring them to a wire rack to cool completely."
+    ],
+    "description": "These peanut butter cookies are sweet, chewy, and packed with peanut flavor. Perfect for peanut butter lovers!",
+    "spice": 1
+}

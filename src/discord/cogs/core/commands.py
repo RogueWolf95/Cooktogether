@@ -4,6 +4,7 @@ import datetime
 import re
 from src.discord.bot import DiscordBot
 from src.discord.cogs.core.components.modals import register
+from src.discord.helpers import json_manager
 
 # =====================================================================================================
 class RegisterModal(nextcord.ui.Modal):
@@ -56,30 +57,45 @@ class CoreCog(commands.Cog):
 
     # =================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="rate_recipe", description="Rate a recipe")
-    async def rate(self, interaction: nextcord.Interaction, user_input: str) -> None:
+    async def rate(self, interaction: nextcord.Interaction, recipe_name:str, rating: int) -> None:
         print("WARNING", f"{interaction.user.name} used CoreCog.rate_recipe at {datetime.datetime.now()}")
-        
+
         if rating < 1 or rating > 5:
             await interaction.send(" Invalid rating. Please provide a rating between 1 and 5.")
             return
-        if recipe_name not in self.ratings:
-            self.ratings[recipe_name] = []
-        self.ratings[recipe_name].append(rating)
+
+        try:
+            recipe_dict = json_manager.open_json(f"src/recipes/{recipe_name}.json")
+        except FileNotFoundError:
+            await interaction.send(f"Recipe not found check name\n{recipe_name}")
+            return -1
+
+        if "ratings" not in recipe_dict.keys():
+            recipe_dict["ratings"] = {
+                interaction.user.id: rating
+            }
+        else:
+            recipe_dict["ratings"][str(interaction.user.id)] = rating
         
+        json_manager.save_json(f"src/recipes/{recipe_name}.json", recipe_dict)
         await interaction.send(f" Thank you for submitting '{recipe_name}' with {rating} stars!")
 
-    # =================================================================================================
-    @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="favorite_recipe", description="Add a recipe to a favorite list")
-    async def favorite(self, interaction: nextcord.Interaction, user_input: str) -> None:
-        print("WARNING", f"{interaction.user.name} usedCoreCog.favorite_recipes at {datetime.datetime.now()}")
+
+    # # =================================================================================================
+    # @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="favorite_recipe", description="Add a recipe to a favorite list")
+    # async def favorite(self, interaction: nextcord.Interaction, user_input: str) -> None:
+    #     print("WARNING", f"{interaction.user.name} usedCoreCog.favorite_recipes at {datetime.datetime.now()}")
         
-        if interaction.user.id not in self.favorite_lists:
-            self.favorite_lists[interaction.user.id] = []
-        if recipe_name not in self.favorite_lists[interaction.user.id]:
-            self.favorite_lists[interaction.user.id].append(recipe_name)
-            await interaction.send(f"Added '{recipe_name}' to your favorite recipe list!")
-        else:
-            await interaction.send(f"You already have '{recipe_name}' in your favorite recipe list.")
+    #     if interaction.user.id not in self.favorite_lists:
+    #         self.favorite_lists[interaction.user.id] = []
+
+    #     if recipe_name not in self.favorite_lists[interaction.user.id]:
+    #         self.favorite_lists[interaction.user.id].append(recipe_name)
+
+
+    #         await interaction.send(f"Added '{recipe_name}' to your favorite recipe list!")
+    #     else:
+    #         await interaction.send(f"You already have '{recipe_name}' in your favorite recipe list.")
 
     # =================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="convert", description="Convert a value from one unit to another")
