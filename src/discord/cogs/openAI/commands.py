@@ -1,6 +1,6 @@
 import os
 import openai
-
+import inspect
 from nextcord.ext import commands
 import nextcord
 import datetime
@@ -32,7 +32,7 @@ class AICog(commands.Cog):
     # =====================================================================================================
     @nextcord.slash_command(dm_permission=False, name="contains", description="type an ingredient or list of ingredients")
     async def contains(self, interaction: nextcord.Interaction, ingredient: str, allergies: str=None) -> None:
-        print("INFO", f"{interaction.user.name} used AICog.contains at {datetime.datetime.now()}")
+        print("INFO", f"{interaction.user.name} used {self}.{inspect.currentframe().f_code.co_name} at {datetime.datetime.now()}")
         """use AI to find recipes that contain certain ingredients"""
         await interaction.response.defer()
 
@@ -52,7 +52,7 @@ class AICog(commands.Cog):
     # =====================================================================================================
     @nextcord.slash_command(dm_permission=False, name="get_recipe", description="use AI to find recipes that contain certain ingredients")
     async def get_recipe(self, interaction: nextcord.Interaction, dish_name: str, serving_count: int=2) -> None:
-        print("INFO", f"{interaction.user.name} used AICog.contains at {datetime.datetime.now()}")
+        print("INFO", f"{interaction.user.name} used {self}.{inspect.currentframe().f_code.co_name} at {datetime.datetime.now()}")
         """use AI to find recipes that contain certain ingredients"""
         await interaction.response.defer()
         messages = [
