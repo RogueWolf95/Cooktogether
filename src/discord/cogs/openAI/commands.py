@@ -47,6 +47,7 @@ class AICog(commands.Cog):
 
         response = self.generate_response(messages, 150)
         await interaction.followup.send(response)
+        
 
     # =====================================================================================================
     @nextcord.slash_command(dm_permission=False, name="get_recipe", description="use AI to find recipes that contain certain ingredients")
@@ -57,6 +58,45 @@ class AICog(commands.Cog):
         messages = [
                 {"role": "system", "content": f"You are a helpful sous chef preparing a concise recipe.\n===\nPart 1: List the Ingredients for {serving_count} servings\n- ingredient 1\n- ingredient 2\n===\nPart 2: Write concise Instructions\n1.\n2.\n3.\n===\nPart 3: short Description of dish\nPart 4: spice factor integer between one and ten"},
                 {"role": "user", "content": f'Generate a step by step recipe for {dish_name}'}
+            ]
+        response = self.generate_response(messages, 1000)
+        with open(f"src/recipes/{dish_name}.txt", "w") as fout:
+            fout.writelines(response)
+
+        r_embed, i_embed = self.recipe_embedding.create_embeds(title=f"Recipe for {dish_name}", message=response)
+
+        await interaction.followup.send(embed=r_embed)
+        await interaction.send(embed=i_embed)
+
+# =====================================================================================================
+    @nextcord.slash_command(dm_permission=False, name="cuisine", description="use AI to find recipes of a certain cuisine")
+    async def cuisine(self, interaction: nextcord.Interaction, cuisine_name: str, allergies: str=None) -> None:
+        print("INFO", f"{interaction.user.name} used AICog.contains at {datetime.datetime.now()}")
+        """use AI to find recipes of a certain cuisine"""
+        await interaction.response.defer()
+
+        user_message = f"Create a list of 5 recipe names that are a {cuisine_name} dish"
+        if allergies:
+            user_message += f" exclude recipes that contain {allergies}"
+
+        messages = [
+                {"role": "system", "content": "You are a helpful sous chef."},
+                {"role": "user", "content":  user_message}
+            ]
+
+        response = self.generate_response(messages, 150)
+        await interaction.followup.send(response)
+        
+        
+# =====================================================================================================
+    @nextcord.slash_command(dm_permission=False, name="get_nutrition", description="use AI to find nutrition facts for dish")
+    async def get_nutrition(self, interaction: nextcord.Interaction, dish_name: str, serving_count: int=2) -> None:
+        print("INFO", f"{interaction.user.name} used AICog.contains at {datetime.datetime.now()}")
+        """use AI to find nutrition facts for dish"""
+        await interaction.response.defer()
+        messages = [
+                {"role": "system", "content": f"You are a helpful sous chef preparing a concise recipe.\n===\nPart 1: List the Ingredients for {serving_count} servings\n- ingredient 1\n- ingredient 2\n===\nPart 2: Give nutrtional facts for calories, fats, carbohydrates, and protein\n1.\n2.\n3.\n===\nPart 3: short Description of dish\n"},
+                {"role": "user", "content": f'Generate nutritional information for {dish_name}'}
             ]
         response = self.generate_response(messages, 1000)
         with open(f"src/recipes/{dish_name}.txt", "w") as fout:
