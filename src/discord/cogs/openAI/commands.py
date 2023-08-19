@@ -55,6 +55,8 @@ class AICog(commands.Cog):
 
         response = self.generate_response(messages, 150)
 
+        embed.add_field("========", response)
+
         message = await interaction.followup.send(embed=embed)
 
         # Add reactions to the message
