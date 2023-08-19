@@ -142,7 +142,7 @@ class AICog(commands.Cog):
 
         messages = [
                 {"role": "system", "content": "You are a helpful sous chef. Please help me with my culinary problem. do not respond to non culinary questions"},
-                {"role": "user", "content":  query}
+                {"role": "user", "content":  query + "do not respond to non culinary questions"}
             ]
         response = self.generate_response(messages, 500)
 
