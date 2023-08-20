@@ -6,4 +6,6 @@
 /.env
 /.vs
 /.vscode
+/.json
+/.pdf
 __pycache__/

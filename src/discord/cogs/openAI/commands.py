@@ -64,7 +64,7 @@ class AICog(commands.Cog):
             await message.add_reaction(reaction)
 
         # Start a background task to watch for reactions
-        self.bot.loop.create_task(wait_for_idx_reaction(self.bot, interaction, response, message))
+        self.bot.loop.create_task(wait_for_idx_reaction(self, interaction, response, message))
         
 
     # =====================================================================================================
@@ -164,16 +164,16 @@ class AICog(commands.Cog):
         print("INFO", f"{interaction.user.name} used AICog.contains at {datetime.datetime.now()}")
         """use AI to find nutrition facts for dish"""
         await interaction.response.defer()
-        messages = [
-                {"role": "system", "content": f"You are a helpful sous chef preparing a concise recipe.\n===\nPart 1: List the Ingredients for {serving_count} servings\n- ingredient 1\n- ingredient 2\n===\nPart 2: Give nutritional facts for calories, fats, carbohydrates, and protein\n1.\n2.\n3.\n===\nPart 3: short Description of dish\n"},
-                {"role": "user", "content": f'Generate nutritional information for {dish_name}'}
-            ]
-        response = self.generate_response(messages, 500)
+        # messages = [
+        #         {"role": "system", "content": f"You are a helpful sous chef preparing a concise recipe.\n===\nPart 1: List the Ingredients for {serving_count} servings\n- ingredient 1\n- ingredient 2\n===\nPart 2: Give nutritional facts for calories, fats, carbohydrates, and protein\n1.\n2.\n3.\n===\nPart 3: short Description of dish\n"},
+        #         {"role": "user", "content": f'Generate nutritional information for {dish_name}'}
+        #     ]
+        # response = self.generate_response(messages, 500)
 
-        r_embed, i_embed = self.recipe_embedding.create_embeds(title=f"Recipe for {dish_name}", message=response)
+        # r_embed, i_embed = self.recipe_embedding.create_embeds(title=f"Recipe for {dish_name}", message=response)
 
-        await interaction.followup.send(embed=r_embed)
-        await interaction.send(embed=i_embed)
+        # await interaction.followup.send(embed=r_embed)
+        await interaction.send("Coming soon!")
 
 
 def setup(bot: commands.Bot):
