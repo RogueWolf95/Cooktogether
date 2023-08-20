@@ -1,8 +1,6 @@
-import json
 import os
-from typing import Dict
 
-from nextcord import Intents, Member, Message
+from nextcord import Intents
 from nextcord.ext import commands
 
 class DiscordBot(commands.Bot):
@@ -21,6 +19,10 @@ class DiscordBot(commands.Bot):
         self.primary_symbol = "="
         self.secondary_symbol = "-"
         self.settings = None
+
+        self.IDX_REACTIONS = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]
+        self.OPTIONS_REACTIONS = ["💾", "⭐", "♥️"]
+        self.LOGO_PATH = "src/images/Logo1_printer.png"
 
         print("bot running")
         self.load_cogs()

@@ -1,10 +1,10 @@
-import asyncio
 import os
 import openai
 import inspect
 from nextcord.ext import commands
 import nextcord
 import datetime
+from src.discord.cogs.openAI.components.tasks import wait_for_idx_reaction, wait_for_options_reaction
 from src.discord.helpers.embedding.recipe_embed import RecipeEmbedding
 from src.discord.bot import DiscordBot
 from src.discord.helpers import parser
@@ -15,7 +15,6 @@ openai.api_key = os.getenv("OPEN_AI_TOKEN")
 
 
 class AICog(commands.Cog):
-    REACTIONS = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]
 
     def __init__(self, bot):
         self.recipe_embedding = RecipeEmbedding()
@@ -61,51 +60,12 @@ class AICog(commands.Cog):
         message = await interaction.followup.send(embed=embed)
 
         # Add reactions to the message
-        for reaction in self.REACTIONS:
+        for reaction in self.bot.IDX_REACTIONS:
             await message.add_reaction(reaction)
 
         # Start a background task to watch for reactions
-        self.bot.loop.create_task(self.wait_for_reaction(interaction, messages, response, message))
+        self.bot.loop.create_task(wait_for_idx_reaction(interaction, response, message))
         
-
-    async def wait_for_reaction(self, interaction, messages, response, message):
-            def check(reaction, user):
-                return user == interaction.user and str(reaction.emoji) in self.REACTIONS and reaction.message.id == message.id
-
-            try:
-                reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
-                await self.handle_reaction(interaction, messages, response, reaction)
-            except asyncio.TimeoutError:
-                # Handle the timeout, e.g., remove the reactions from the message
-                for reaction in self.REACTIONS:
-                    await message.remove_reaction(reaction, self.bot.user)
-
-
-    async def handle_reaction(self, interaction, messages, response, reaction):
-        """Handle the reaction pressed by the user"""
-        response = response.split("\n")
-
-        if str(reaction.emoji) == "1️⃣":
-            # handle first recipe
-            await self.get_recipe(interaction, response[0].replace("1. ", ""))
-        elif str(reaction.emoji) == "2️⃣":
-            # handle second recipe
-            await self.get_recipe(interaction, response[1].replace("2. ", ""))
-        elif str(reaction.emoji) == "3️⃣":
-            # handle second recipe
-            await self.get_recipe(interaction, response[2].replace("3. ", ""))
-        elif str(reaction.emoji) == "4️⃣":
-            # handle second recipe
-            await self.get_recipe(interaction, response[3].replace("4. ", ""))
-        elif str(reaction.emoji) == "5️⃣":
-            # handle second recipe
-            await self.get_recipe(interaction, response[4].replace("5. ", ""))
-
-
-
-
-
-
 
     # =====================================================================================================
     @nextcord.slash_command(dm_permission=False, name="get_recipe", description="use AI to find recipes that contain certain ingredients")
@@ -120,6 +80,8 @@ class AICog(commands.Cog):
 
         if f"{dish_name}.json" in os.listdir("src/recipes"):
             recipe_info = json_manager.open_json(f"src/recipes/{dish_name}.json")
+            messages = []
+            response = ""
         else:
             messages = [
                     {"role": "system", "content": f"You are a helpful sous chef preparing a concise recipe.\n===\nPart 1: List the Ingredients for {serving_count} servings\n- ingredient 1\n- ingredient 2\n===\nPart 2: Write concise Instructions\n1.\n2.\n3.\n===\nPart 3: short Description of dish\nPart 4: carefully concider a spice factor integer between one and ten"},
@@ -132,7 +94,15 @@ class AICog(commands.Cog):
         head_embed, instructions_embed = self.recipe_embedding.create_embeds(dish_name, recipe_info)
 
         await interaction.followup.send(embed=head_embed)
-        await interaction.followup.send(embed=instructions_embed)
+        message = await interaction.followup.send(embed=instructions_embed)
+
+        # Add reactions to the message
+        for reaction in self.bot.OPTIONS_REACTIONS:
+            await message.add_reaction(reaction)
+
+        # Start a background task to watch for reactions
+        self.bot.loop.create_task(wait_for_options_reaction(interaction, recipe_info, message))
+
 
 
 # =====================================================================================================
@@ -180,13 +150,14 @@ class AICog(commands.Cog):
         message = await interaction.followup.send(embed=embed)
 
         # Add reactions to the message
-        for reaction in self.REACTIONS:
+        for reaction in self.IDX_REACTIONS:
             await message.add_reaction(reaction)
 
         # Start a background task to watch for reactions
-        self.bot.loop.create_task(self.wait_for_reaction(interaction, messages, response, message))
+        self.bot.loop.create_task(wait_for_idx_reaction(interaction, messages, response, message))
         
         
+
 # =====================================================================================================
     @nextcord.slash_command(dm_permission=False, name="get_nutrition", description="use AI to find nutrition facts for dish")
     async def get_nutrition(self, interaction: nextcord.Interaction, dish_name: str, serving_count: int=2) -> None:
@@ -194,7 +165,7 @@ class AICog(commands.Cog):
         """use AI to find nutrition facts for dish"""
         await interaction.response.defer()
         messages = [
-                {"role": "system", "content": f"You are a helpful sous chef preparing a concise recipe.\n===\nPart 1: List the Ingredients for {serving_count} servings\n- ingredient 1\n- ingredient 2\n===\nPart 2: Give nutrtional facts for calories, fats, carbohydrates, and protein\n1.\n2.\n3.\n===\nPart 3: short Description of dish\n"},
+                {"role": "system", "content": f"You are a helpful sous chef preparing a concise recipe.\n===\nPart 1: List the Ingredients for {serving_count} servings\n- ingredient 1\n- ingredient 2\n===\nPart 2: Give nutritional facts for calories, fats, carbohydrates, and protein\n1.\n2.\n3.\n===\nPart 3: short Description of dish\n"},
                 {"role": "user", "content": f'Generate nutritional information for {dish_name}'}
             ]
         response = self.generate_response(messages, 500)

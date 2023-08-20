@@ -1,6 +1,4 @@
-import json
 import re
-# from src.discord.helpers import testing
 
 def split_recipe_string(input_string):
     part_1_idx = input_string.find("Part 1:")
@@ -51,7 +49,7 @@ def recipe_parser(recipe_name:str, message:str):
         "instructions": instructions,
         "description": description,
         "spice": spice_rating,
-        "rating": {},
+        "ratings": {},
         "Fav_counts": 0
     }
 

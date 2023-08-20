@@ -13,9 +13,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate, Spacer
 
-os.chdir(Path(__file__).parent)
-pdfmetrics.registerFont(TTFont('impossible', '../../../src/fonts/Imposible_fill.ttf'))
-pdfmetrics.registerFont(TTFont('brazierflame', '../../../src/fonts/BrazierFlame.ttf'))
+pdfmetrics.registerFont(TTFont('impossible', 'src/fonts/Imposible_fill.ttf'))
+pdfmetrics.registerFont(TTFont('brazierflame', 'src/fonts/BrazierFlame.ttf'))
 
 
 def create_recipe_doc(recipe_info, output_file):
