@@ -35,5 +35,7 @@
         "- Season with salt and pepper to taste, adjusting according to your preferences."
     ],
     "description": "",
-    "spice": 0
+    "spice": 0,
+    "Fav_counts": 0,
+    "ratings": {}
 }

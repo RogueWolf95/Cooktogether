@@ -16,8 +16,6 @@ def extract_section_pretext(s:str):
         return s
 
 
-
-    
 def extract_spicy_integer(s:str):
     match = re.search(r'\d+', s)
     if match:
@@ -29,9 +27,10 @@ def extract_spicy_integer(s:str):
     else:
         return 0
 
+
 def recipe_parser(recipe_name:str, message:str):
     part_idx = split_recipe_string(message)
-    print(part_idx)
+
     ingredients:list[str] = extract_section_pretext(message[part_idx[0]:part_idx[1]-1]).split("\n")
 
     instructions:list[str] = extract_section_pretext(message[part_idx[1]:part_idx[2]-1]).split("\n")

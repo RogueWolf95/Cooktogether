@@ -20,5 +20,7 @@
         "6. Serve the flamin hot tacos immediately."
     ],
     "description": "Flamin hot tacos are a spicy twist on traditional tacos, filled with seasoned ground beef and topped with a mix of fresh vegetables. For the extra daring, adding ghost peppers takes the heat to another level.",
-    "spice": 7
+    "spice": 0,
+    "Fav_counts": 0,
+    "ratings": {}
 }

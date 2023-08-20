@@ -1,0 +1,31 @@
+{
+    "name": "orange chicken",
+    "ingredients": [
+        "1 boneless, skinless chicken breast",
+        "1/4 cup orange juice",
+        "2 tablespoons soy sauce",
+        "2 tablespoons honey",
+        "1 teaspoon cornstarch",
+        "1/4 teaspoon ginger powder",
+        "1/4 teaspoon garlic powder",
+        "1/8 teaspoon red pepper flakes",
+        "1 tablespoon vegetable oil",
+        "Salt and pepper to taste"
+    ],
+    "instructions": [
+        "1. In a small bowl, whisk together orange juice, soy sauce, honey, cornstarch, ginger powder, garlic powder, and red pepper flakes. Set aside.",
+        "2. Season the chicken breast with salt and pepper on both sides.",
+        "3. Heat vegetable oil in a skillet over medium-high heat.",
+        "4. Add the chicken breast to the skillet and cook for about 4-5 minutes on each side, until golden brown and cooked through.",
+        "5. Remove the cooked chicken from the skillet and set it aside.",
+        "6. Reduce the heat to low and pour the orange sauce into the skillet.",
+        "7. Stir the sauce continuously until it thickens, about 1-2 minutes.",
+        "8. Return the cooked chicken to the skillet and toss it in the sauce until evenly coated.",
+        "9. Cook for an additional 1-2 minutes to allow the flavors to combine.",
+        "10. Remove from heat and serve the orange chicken hot."
+    ],
+    "description": "Orange chicken is a delicious and tangy Chinese-inspired dish that features crispy chicken coated in a flavorful orange sauce.\n",
+    "spice": 6,
+    "Fav_counts": 0,
+    "ratings": {}
+}

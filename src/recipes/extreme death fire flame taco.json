@@ -33,5 +33,7 @@
         "9. Enjoy!"
     ],
     "description": "The Extreme Death Fire Flame Taco is a spicy and flavorful taco filled with seasoned ground beef, saut\u00e9ed onions and bell peppers, and topped with a combination of cheese, lettuce, tomatoes, and cilantro. The hot sauce adds an extra kick, making it perfect for those who love fiery flavors.",
-    "spice": 9
+    "spice": 0,
+    "Fav_counts": 0,
+    "ratings": {}
 }

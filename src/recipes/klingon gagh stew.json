@@ -21,5 +21,7 @@
         "8. Serve the Klingon Gagh Stew hot in individual bowls, along with some fresh bloodwine for a traditional Klingon experience."
     ],
     "description": "Klingon Gagh Stew is a bold and hearty dish made with live serpent worms, Klingon heart, eyeballs, and Targ liver. It is infused with the intense flavors of bloodwine and gagh spices, resulting in a rich and savory stew that will satisfy any warrior's appetite.",
-    "spice": 9
+    "spice": 0,
+    "Fav_counts": 0,
+    "ratings": {}
 }

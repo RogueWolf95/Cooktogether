@@ -27,7 +27,7 @@ class RecipeEmbedding:
             instructions = instructions[:1000] + "\n\nOUTPUT TOO LONG\n..."
         i_embed = Embed(title=f"{name}", color=colors.heat_color_scale(recipe_info["spice"]))
         i_embed.add_field(name="The Instructions", value=instructions, inline=False)
-        i_embed.set_footer(text="Created by AI")
+        i_embed.set_footer(text="CREATED BY AI - click the reaction below to save a pdf")
 
 
         return r_embed, i_embed

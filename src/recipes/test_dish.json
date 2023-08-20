@@ -1,29 +1,46 @@
 {
-    "name": "test_dish",
+    "name": "Brown Sugar Pecan Banana Bread",
     "ingredients": [
-        "2 1/4 cups all purpose flour",
-        "1/2 teaspoon baking powder",
-        "1/4 teaspoon salt",
-        "1/2 cup unsalted butter, softened",
-        "1 cup granulated sugar",
-        "1 large egg",
+        "1 \u00bd cups mashed bananas (about 34 ripe bananas)",
+        "\u00bd cup unsalted butter, melted",
+        "\u00be cup brown sugar",
+        "1 large egg, beaten",
         "1 teaspoon vanilla extract",
-        "Assorted Halloween themed decorations (sprinkles, candy eyes, etc.)"
+        "1 \u00bd cups allpurpose flour",
+        "1 teaspoon baking soda",
+        "\u00bd teaspoon salt",
+        "1 cup chopped pecans"
     ],
     "instructions": [
-        "1. Preheat the oven to 350\u00b0F (175\u00b0C) and line a baking sheet with parchment paper.",
-        "2. In a mixing bowl, whisk together the flour, baking powder, and salt. Set aside.",
-        "3. In a separate large mixing bowl, cream together the softened butter and sugar until light and fluffy.",
-        "4. Beat in the egg and vanilla extract until combined.",
-        "5. Gradually add the dry flour mixture to the butter mixture, mixing until just combined.",
-        "6. Roll the dough into small balls and place them onto the prepared baking sheet, leaving space between each cookie.",
-        "7. Flatten each cookie slightly with your hand or the bottom of a glass.",
-        "8. Decorate the cookies with assorted Halloween-themed decorations, pressing them gently into each cookie.",
-        "9. Bake in the preheated oven for 10-12 minutes, or until the edges are lightly golden brown.",
-        "10. Remove from the oven and allow the cookies to cool on the baking sheet for 5 minutes before transferring them to a wire rack to cool completely."
+        "1. Preheat the oven to 350\u00b0F (175\u00b0C) and grease a 9x5-inch loaf pan.",
+        "2. In a large mixing bowl, combine the mashed bananas, melted butter, brown sugar, beaten egg, and vanilla extract. Mix well until all the ingredients are fully incorporated.",
+        "",
+        "3. In a separate bowl, whisk together the all-purpose flour, baking soda, and salt. Gradually add the dry mixture to the wet ingredients, stirring until just combined. Do not overmix.",
+        "",
+        "4. Gently fold in the chopped pecans, making sure they are evenly distributed throughout the batter.",
+        "",
+        "5. Pour the batter into the prepared loaf pan and smooth the top with a spatula.",
+        "6. Bake in the preheated oven for 55-60 minutes, or until a toothpick inserted into the center of the bread comes out clean.",
+        "",
+        "7. Once baked, remove the pan from the oven and let the bread cool for about 10 minutes. Then, transfer the bread to a wire rack to cool completely before slicing and serving.",
+        "",
+        "1. Preheat the oven to 350\u00b0F (175\u00b0C) and grease a 9x5-inch loaf pan.",
+        "2. In a large mixing bowl, combine the mashed bananas, melted butter, brown sugar, beaten egg, and vanilla extract. Mix well until all the ingredients are fully incorporated.",
+        "",
+        "3. In a separate bowl, whisk together the all-purpose flour, baking soda, and salt. Gradually add the dry mixture to the wet ingredients, stirring until just combined. Do not overmix.",
+        "",
+        "4. Gently fold in the chopped pecans, making sure they are evenly distributed throughout the batter.",
+        "",
+        "5. Pour the batter into the prepared loaf pan and smooth the top with a spatula.",
+        "6. Bake in the preheated oven for 55-60 minutes, or until a toothpick inserted into the center of the bread comes out clean.",
+        "",
+        "7. Once baked, remove the pan from the oven and let the bread cool for about 10 minutes. Then, transfer the bread to a wire rack to cool completely before slicing and serving.",
+        ""
     ],
-    "description": "These Halloween cookies are a festive and tasty treat perfect for the spooky season. The soft and buttery cookies are adorned with colorful Halloween decorations, making them a fun and delicious addition to any Halloween gathering or celebration.\n",
+    "description": "Brown Sugar Pecan Banana Bread is a delicious and moist bread made with ripe bananas, brown sugar, and crunchy pecans. It's a perfect treat for breakfast or as an afternoon snack. \n",
     "spice": 1,
-    "rating": {},
-    "Fav_counts": 0
+    "Fav_counts": 0,
+    "ratings": {
+        "165453570227961856": 4
+    }
 }

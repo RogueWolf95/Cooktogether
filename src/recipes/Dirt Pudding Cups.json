@@ -15,5 +15,9 @@
         "6. Serve chilled and enjoy!"
     ],
     "description": "Dirt Pudding Cups are a fun and indulgent dessert, featuring layers of creamy chocolate pudding and crushed cookies, topped with a gummy worm. They are reminiscent of an edible mini garden, perfect for kids and those young at heart.",
-    "spice": 1
+    "spice": 0,
+    "Fav_counts": 0,
+    "ratings": {
+        "165453570227961856": 3
+    }
 }

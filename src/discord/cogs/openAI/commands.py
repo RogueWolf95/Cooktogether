@@ -40,10 +40,10 @@ class AICog(commands.Cog):
         print("INFO", f"{interaction.user.name} used {self}.{inspect.currentframe().f_code.co_name} at {datetime.datetime.now()}")
         """use AI to find recipes that contain certain ingredients"""
         await interaction.response.defer()
-        
-        embed = nextcord.Embed(title=f"Recipes that contain {ingredient}.")
+        embed_title = f"Recipes that contain {ingredient}."
+        embed = nextcord.Embed(title=embed_title)
 
-        user_message = f"Create a list of 5 recipe names that contain {ingredient}"
+        user_message = f"Create a list of 5 recipe names that contain {ingredient}, list only the names"
         if allergies:
             embed.description = f"Excluding: {allergies}"
             user_message += f" exclude recipes that contain {allergies}"
@@ -55,7 +55,8 @@ class AICog(commands.Cog):
 
         response = self.generate_response(messages, 150)
 
-        embed.add_field(name="========", value=response)
+        embed.add_field(name="="*len(embed_title), value=response)
+        embed.set_footer(text="Click the numbers below to view recipe details")
 
         message = await interaction.followup.send(embed=embed)
 
@@ -121,18 +122,17 @@ class AICog(commands.Cog):
             recipe_info = json_manager.open_json(f"src/recipes/{dish_name}.json")
         else:
             messages = [
-                    {"role": "system", "content": f"You are a helpful sous chef preparing a concise recipe.\n===\nPart 1: List the Ingredients for {serving_count} servings\n- ingredient 1\n- ingredient 2\n===\nPart 2: Write concise Instructions\n1.\n2.\n3.\n===\nPart 3: short Description of dish\nPart 4: spice factor integer between one and ten"},
+                    {"role": "system", "content": f"You are a helpful sous chef preparing a concise recipe.\n===\nPart 1: List the Ingredients for {serving_count} servings\n- ingredient 1\n- ingredient 2\n===\nPart 2: Write concise Instructions\n1.\n2.\n3.\n===\nPart 3: short Description of dish\nPart 4: carefully concider a spice factor integer between one and ten"},
                     {"role": "user", "content": f'Generate a step by step recipe for {dish_name}'}
                 ]
             response = self.generate_response(messages, 1000)
             recipe_info = parser.recipe_parser(dish_name, response)
             json_manager.save_json(f"src/recipes/{dish_name}.json", recipe_info)
 
-        r_embed, i_embed = self.recipe_embedding.create_embeds(dish_name, recipe_info)
+        head_embed, instructions_embed = self.recipe_embedding.create_embeds(dish_name, recipe_info)
 
-
-        await interaction.followup.send(embed=r_embed)
-        await interaction.followup.send(embed=i_embed)
+        await interaction.followup.send(embed=head_embed)
+        await interaction.followup.send(embed=instructions_embed)
 
 
 # =====================================================================================================
@@ -160,6 +160,8 @@ class AICog(commands.Cog):
         print("INFO", f"{interaction.user.name} used AICog.contains at {datetime.datetime.now()}")
         """use AI to find recipes of a certain cuisine"""
         await interaction.response.defer()
+        embed_title = f"{cuisine_name} Recipes."
+        embed = nextcord.Embed(title=embed_title)
 
         user_message = f"Create a list of 5 recipe names that are a {cuisine_name} dish"
         if allergies:
@@ -171,7 +173,18 @@ class AICog(commands.Cog):
             ]
 
         response = self.generate_response(messages, 150)
-        await interaction.followup.send(response)
+
+        embed.add_field(name="="*len(embed_title), value=response)
+        embed.set_footer(text="Click the numbers below to view recipe details")
+
+        message = await interaction.followup.send(embed=embed)
+
+        # Add reactions to the message
+        for reaction in self.REACTIONS:
+            await message.add_reaction(reaction)
+
+        # Start a background task to watch for reactions
+        self.bot.loop.create_task(self.wait_for_reaction(interaction, messages, response, message))
         
         
 # =====================================================================================================
