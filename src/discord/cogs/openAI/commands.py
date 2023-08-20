@@ -64,7 +64,7 @@ class AICog(commands.Cog):
             await message.add_reaction(reaction)
 
         # Start a background task to watch for reactions
-        self.bot.loop.create_task(wait_for_idx_reaction(interaction, response, message))
+        self.bot.loop.create_task(wait_for_idx_reaction(self.bot, interaction, response, message))
         
 
     # =====================================================================================================
@@ -101,7 +101,7 @@ class AICog(commands.Cog):
             await message.add_reaction(reaction)
 
         # Start a background task to watch for reactions
-        self.bot.loop.create_task(wait_for_options_reaction(interaction, recipe_info, message))
+        self.bot.loop.create_task(wait_for_options_reaction(self.bot, interaction, recipe_info, message))
 
 
 

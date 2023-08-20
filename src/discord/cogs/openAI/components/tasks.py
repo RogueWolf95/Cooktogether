@@ -37,26 +37,26 @@ async def handle_idx_reaction(self, interaction, response, reaction):
         await self.get_recipe(interaction, response[4].replace("5. ", ""))
 
 
-async def wait_for_options_reaction(self, interaction, recipe_info, message):
+async def wait_for_options_reaction(bot, interaction, recipe_info, message):
         def check(reaction, user):
-            return user == interaction.user and str(reaction.emoji) in self.OPTIONS_REACTIONS and reaction.message.id == message.id
+            return user == interaction.user and str(reaction.emoji) in bot.OPTIONS_REACTIONS and reaction.message.id == message.id
 
         try:
-            reaction, user = await self.bot.wait_for('reaction_add', timeout=180.0, check=check)
-            await self.handle_options_reaction(interaction, reaction, recipe_info)
+            reaction, user = await bot.wait_for('reaction_add', timeout=180.0, check=check)
+            await handle_options_reaction(bot, interaction, reaction, recipe_info)
         except asyncio.TimeoutError:
             # Handle the timeout, e.g., remove the reactions from the message
-            for reaction in self.OPTIONS_REACTIONS:
-                await message.remove_reaction(reaction, self.bot.user)
+            for reaction in bot.OPTIONS_REACTIONS:
+                await message.remove_reaction(reaction, bot.user)
 
 
-async def handle_options_reaction(self, interaction, reaction, recipe_info):
+async def handle_options_reaction(bot, interaction, reaction, recipe_info):
     print(reaction)
     output_path = f"src/temp/{recipe_info['name']}.pdf"
     if str(reaction.emoji) == "💾":
         # handle save file
         create_recipe_doc(recipe_info, output_path)
-        stamp_image_to_pdf(output_path, output_path, self.LOGO_PATH)
+        stamp_image_to_pdf(output_path, output_path, bot.LOGO_PATH)
         
         await interaction.user.send(file=nextcord.File(output_path))
         
