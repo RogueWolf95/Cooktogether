@@ -79,33 +79,6 @@ class CoreCog(commands.Cog):
         
         json_manager.save_json(f"src/recipes/{recipe_name}.json", recipe_dict)
         await interaction.send(f" Thank you for submitting '{recipe_name}' with {rating} stars!")
-
-
-    # # =================================================================================================
-    #@nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="favorite_recipe", description="Add a recipe to a favorite list")
-    #async def favorite_recipe(self, interaction: nextcord.Interaction, recipe_name: str) -> None:
-        #print("WARNING", f"{interaction.user.name} used CoreCog.favorite_recipe at {datetime.datetime.now()}")
-
-    #try:
-        #user_id = str(interaction.user.id)
-        #recipe_dict = json_manager.open_json(f"src/recipes/{recipe_name}.json")
-    #except FileNotFoundError:
-        #await interaction.send(f"Recipe not found. Check the name: {recipe_name}")
-        #return
-
-    #favorites_file = f"src/favorites/{user_id}_favorites.json"
-
-    #try:
-        #favorites_dict = json_manager.open_json(favorites_file)
-    #except FileNotFoundError:
-        #favorites_dict = {}
-
-    #if recipe_name not in favorites_dict.keys():
-        #favorites_dict[recipe_name] = recipe_dict["title"]
-        #json_manager.save_json(favorites_file, favorites_dict)
-        #await interaction.send(f"Added '{recipe_name}' to your favorites!")
-    #else:
-        #await interaction.send(f"'{recipe_name}' is already in your favorites.")
     
     # =================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="convert", description="Convert a value from one unit to another")
