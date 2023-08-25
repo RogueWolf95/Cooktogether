@@ -1,0 +1,23 @@
+{
+    "name": "hot sauce",
+    "ingredients": [
+        "10 red chili peppers",
+        "4 cloves of garlic",
+        "1/4 cup white vinegar",
+        "1 teaspoon salt",
+        "1 tablespoon lime juice",
+        "1 tablespoon honey"
+    ],
+    "instructions": [
+        "1. Clean and remove the stems from the red chili peppers.",
+        "2. In a blender, combine the chili peppers, garlic cloves, white vinegar, salt, lime juice, and honey.",
+        "3. Blend on high speed until all the ingredients are well combined and you have a smooth sauce.",
+        "4. Taste the hot sauce and adjust seasonings, adding more salt, lime juice, or honey as desired.",
+        "5. Transfer the hot sauce to a clean glass jar or bottle.",
+        "6. Store in the refrigerator for at least 2 hours before using to allow the flavors to meld together."
+    ],
+    "description": "This hot sauce recipe combines the heat of red chili peppers with the tang of lime juice and the sweetness of honey. It is a versatile sauce that can be used to add flavor and spice to a variety of dishes.\n",
+    "spice": 7,
+    "rating": {},
+    "Fav_counts": 0
+}

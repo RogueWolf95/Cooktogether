@@ -159,11 +159,11 @@ class AICog(commands.Cog):
         
 
 # =====================================================================================================
-    @nextcord.slash_command(dm_permission=False, name="get_nutrition", description="use AI to find nutrition facts for dish")
-    async def get_nutrition(self, interaction: nextcord.Interaction, dish_name: str, serving_count: int=2) -> None:
-        print("INFO", f"{interaction.user.name} used AICog.contains at {datetime.datetime.now()}")
-        """use AI to find nutrition facts for dish"""
-        await interaction.response.defer()
+#    @nextcord.slash_command(dm_permission=False, name="get_nutrition", description="use AI to find nutrition facts for dish")
+#    async def get_nutrition(self, interaction: nextcord.Interaction, dish_name: str, serving_count: int=2) -> None:
+#        print("INFO", f"{interaction.user.name} used AICog.contains at {datetime.datetime.now()}")
+#        """use AI to find nutrition facts for dish"""
+#        await interaction.response.defer()
         # messages = [
         #         {"role": "system", "content": f"You are a helpful sous chef preparing a concise recipe.\n===\nPart 1: List the Ingredients for {serving_count} servings\n- ingredient 1\n- ingredient 2\n===\nPart 2: Give nutritional facts for calories, fats, carbohydrates, and protein\n1.\n2.\n3.\n===\nPart 3: short Description of dish\n"},
         #         {"role": "user", "content": f'Generate nutritional information for {dish_name}'}
@@ -173,7 +173,7 @@ class AICog(commands.Cog):
         # r_embed, i_embed = self.recipe_embedding.create_embeds(title=f"Recipe for {dish_name}", message=response)
 
         # await interaction.followup.send(embed=r_embed)
-        await interaction.send("Coming soon!")
+#        await interaction.send("Coming soon!")
 
 
 def setup(bot: commands.Bot):
