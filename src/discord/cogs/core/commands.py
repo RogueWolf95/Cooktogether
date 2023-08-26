@@ -1,7 +1,6 @@
 from nextcord.ext import commands
 import nextcord
 import datetime
-import re
 from src.discord.bot import DiscordBot
 from src.discord.cogs.core.components.modals import register
 from src.discord.helpers import json_manager
@@ -16,23 +15,115 @@ class RegisterModal(nextcord.ui.Modal):
         await interaction.response.send_message("You are now registered!")
 
 # =====================================================================================================
+class ConversionSelect(nextcord.ui.Select):
+    def __init__(self, value, unit, conversion_table):
+        self.value = value
+        self.unit = unit
+        self.conversion_table = conversion_table
+        options = [
+            nextcord.SelectOption(label=target_unit, description=f"Convert {value} {unit} to {target_unit}")
+            for target_unit in conversion_table[unit]
+        ]
+        super().__init__(placeholder=f"Select a unit to convert {unit} to", max_values=1, min_values=1, options=options)
+
+    async def callback(self, interaction: nextcord.Interaction):
+        target_unit = self.values[0]
+        converted_value = self.value * self.conversion_table[self.unit][target_unit]
+    
+        formatted_conversion = f"{self.value:.1f} {self.unit} is {converted_value:.1f} {target_unit}"
+
+        embed = nextcord.Embed(title="Measurement Conversion", color=nextcord.Color.blue())
+        embed.add_field(name="Conversion Result", value=formatted_conversion, inline=True)
+
+        await interaction.response.send_message(embed=embed)
+
+class ConversionView(nextcord.ui.View):
+    def __init__(self, value, unit, conversion_table, *, timeout=180):
+        super().__init__(timeout=timeout)
+        self.add_item(ConversionSelect(value, unit, conversion_table))
+
+# =====================================================================================================
 class CoreCog(commands.Cog):
     def __init__(self, bot):
         self.bot: DiscordBot = bot
         self.name = "Admin Commands"
         print("CoreCog connected")
-
-        self.conversion_rates = {
-            "grams_to_ounces": 0.035274,
-            "ounces_to_grams": 28.3495,
-            "teaspoons_to_tablespoons": 0.333333,
-            "tablespoons_to_teaspoons": 3,
-            "cups_to_teaspoons": 48,
-            "teaspoons_to_cups": 0.0208333,
-            "cups_to_tablespoons": 16,
-            "tablespoons_to_cups": 0.0625,
+        
+        self.ingredient_swaps = {
+            "egg": {
+                "quantity": "1 egg",
+                "substitutes": [
+                    "1/2 mashed banana (adds sweetness)",
+                    "1/4 cup applesauce (for baking)",
+                    "1 tablespoon ground flaxseed + 3 tablespoons water (let sit for 5 minutes before using)"
+                ]
+            },
+            "butter": {
+                "quantity": "1 cup",
+                "substitutes": [
+                    "1/2 cup mashed avocado",
+                    "1 cup coconut oil",
+                    "1 cup Greek yogurt (for baking)"
+                ]
+            },
+            "milk": {
+                "quantity": "1 cup",
+                "substitutes": [
+                    "1 cup almond milk",
+                    "1 cup soy milk",
+                    "1 cup coconut milk"
+                ]
+            },
+            "sugar": {
+                "quantity": "1 cup",
+                "substitutes": [
+                    "3/4 cup honey (reduce other liquid by 1/4 cup)",
+                    "3/4 cup maple syrup (reduce other liquid by 3 tbsp)",
+                    "1 cup coconut sugar"
+                ]
+            },
+            "bread crumbs": {
+                "quantity": "1 cup",
+                "substitutes": [
+                    "1 cup crushed crackers",
+                    "1 cup oatmeal",
+                    "1 cup quinoa flakes"
+                ]
+            },
+            "flour": {
+                "quantity": "1 cup (all-purpose flour)",
+                "substitutes": [
+                    "1 cup whole wheat flour",
+                    "1/2 cup coconut flour + 1/4 cup more liquid",
+                    "1 cup almond flour"
+                ]
+            },
+            "chocolate": {
+                "quantity": "1 ounce",
+                "substitutes": [
+                    "1 ounce unsweetened baking chocolate + 1 tbsp sugar",
+                    "1 ounce semi-sweet chocolate chips",
+                    "1 tbsp cocoa powder + 2 tsp sugar + 2 tsp unsalted butter"
+                ]
+            },
+            "wine": {
+                "quantity": "1 cup",
+                "substitutes": [
+                    "1 cup chicken or beef broth",
+                    "1 cup fruit juice",
+                    "1 cup water + 1 tbsp vinegar or lemon juice"
+                ]
+            }
         }
 
+        self.conversion_table = {
+            "cups": {"tablespoons": 16, "teaspoons": 48, "ounces": 8, "milliliters": 236.59, "liters": 0.23659},
+            "tablespoons": {"teaspoons": 3, "ounces": 0.5, "milliliters": 14.79, "liters": 0.01479, "cups": 0.0625},
+            "teaspoons": {"tablespoons": 0.3333, "ounces": 0.1667, "milliliters": 4.93, "liters": 0.00493, "cups": 0.02083},
+            "ounces": {"tablespoons": 2, "teaspoons": 6, "cups": 0.125, "milliliters": 29.57, "liters": 0.02957, "grams": 28.35},
+            "grams": {"milligrams": 1000, "ounces": 0.0353}
+        }
+    
     # =================================================================================================
     @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="kill", description="Kill the bot")
     async def bot_shutdown(self, interaction: nextcord.Interaction) -> None:
@@ -79,50 +170,7 @@ class CoreCog(commands.Cog):
         
         json_manager.save_json(f"src/recipes/{recipe_name}.json", recipe_dict)
         await interaction.send(f" Thank you for submitting '{recipe_name}' with {rating} stars!")
-    
-    # =================================================================================================
-    @nextcord.slash_command(default_member_permissions=8, dm_permission=False, name="convert", description="Convert a value from one unit to another")
-    async def convert(self, interaction: nextcord.Interaction, value: float, from_unit: str, to_unit: str) -> None:
-        print("WARNING", f"{interaction.user.name} used CoreCog.convert at {datetime.datetime.now()}")
 
-        from_unit = from_unit.lower()
-        to_unit = to_unit.lower()
-
-        conversion_key = f"{from_unit}_to_{to_unit}"
-
-        if conversion_key in self.conversion_rates:
-            converted_value = value * self.conversion_rates[conversion_key]
-            embed = nextcord.Embed(title="Conversion Result", description=f"{value} {from_unit} is {converted_value} {to_unit}", color=nextcord.Color.blurple())
-            await interaction.send(embed=embed)
-        else:
-            await interaction.send(f"Sorry, I can't convert from {from_unit} to {to_unit}.")
-
-    def convert_measurements_in_recipe(self, recipe, to_unit):
-        conversions = [
-            ("grams", "ounces", 0.035274),
-            ("ounces", "grams", 28.3495),
-            ("teaspoons", "tablespoons", 0.333333),
-            ("tablespoons", "teaspoons", 3),
-            ("cups", to_unit, 16),  # Convert "cups" to the provided to_unit
-        ]
-
-        for from_unit, dest_unit, conversion_rate in conversions:
-            pattern = f"([0-9.]+) {from_unit}"
-            replacement = lambda match: f"{float(match.group(1)) * conversion_rate} {dest_unit}"
-            recipe = re.sub(pattern, replacement, recipe)
-
-        return recipe
-
-    @nextcord.slash_command(dm_permission=False, name="convert_recipe", description="Convert all measurements in a recipe")
-    async def convert_recipe(self, interaction: nextcord.Interaction, *, recipe_and_unit: str) -> None:
-        print("WARNING", f"{interaction.user.name} used CoreCog.convert_recipe at {datetime.datetime.now()}")
-
-        recipe, to_unit = map(str.strip, recipe_and_unit.split(":"))
-
-        converted_recipe = self.convert_measurements_in_recipe(recipe, to_unit)
-
-        embed = nextcord.Embed(title="Converted Recipe", description=converted_recipe, color=nextcord.Color.blurple())
-        await interaction.send(embed=embed)
 
   # =================================================================================================
     @nextcord.slash_command(dm_permission=False, name="register", description="Register to the bot for our newsletter")
@@ -132,5 +180,34 @@ class CoreCog(commands.Cog):
         await interaction.response.send_modal(modal=RegisterModal())
 
 # =====================================================================================================
+    @nextcord.slash_command(dm_permission=False, name="substitute", description="Get substitutions for ingredients")
+    async def substitute(self, interaction: nextcord.Interaction, ingredient: str) -> None:
+        ingredient = ingredient.lower()
+
+        if ingredient in self.ingredient_swaps:
+            substitutes_list = "\n".join(f"{idx+1}. {sub}" for idx, sub in enumerate(self.ingredient_swaps[ingredient]['substitutes']))
+
+            embed = nextcord.Embed(
+                title=f"Substitutes for {self.ingredient_swaps[ingredient]['quantity']}",
+                description=substitutes_list,
+                color=nextcord.Color.green()
+            )
+            await interaction.send(embed=embed)
+        else:
+            await interaction.send(f"I'm sorry, I don't have substitutes for {ingredient} right now.")
+
+# =====================================================================================================
+    @nextcord.slash_command(dm_permission=False, name="convert", description="Convert measurements")
+    async def convert(self, interaction: nextcord.Interaction, amount: float, unit: str) -> None:
+        unit = unit.lower()
+        if unit in self.conversion_table:
+            view = ConversionView(amount, unit, self.conversion_table)
+            await interaction.send(f"Select the unit you want to convert {unit} to:", view=view)
+        else:
+            await interaction.send(f"I'm sorry, I don't have conversions for {unit} right now.")
+
+   
+# =====================================================================================================
 def setup(bot: commands.Bot):
     bot.add_cog(CoreCog(bot))
+
