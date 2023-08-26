@@ -10,6 +10,7 @@ from src.discord.bot import DiscordBot
 from src.discord.helpers import parser
 from src.discord.helpers import json_manager
 
+
 openai.organization = os.getenv("OPEN_AI_ORG")
 openai.api_key = os.getenv("OPEN_AI_TOKEN")
 
@@ -31,6 +32,23 @@ class AICog(commands.Cog):
         )
 
         return response['choices'][0]['message']['content']
+
+    def determine_difficulty(self, recipe_info):
+        steps = len(recipe_info.get('steps', []))
+        ingredients = len(recipe_info.get('ingredients', []))
+        
+        total = steps + ingredients
+
+        if total <= 5:
+            return "Beginner"
+        elif 5 < total <= 10:
+            return "Intermediate"
+        elif 10 < total <= 15:
+            return "Advanced"
+        else:
+            return "Expert"
+
+
 
 
     # =====================================================================================================
@@ -69,10 +87,9 @@ class AICog(commands.Cog):
 
     # =====================================================================================================
     @nextcord.slash_command(dm_permission=False, name="get_recipe", description="use AI to find recipes that contain certain ingredients")
-    async def get_recipe(self, interaction: nextcord.Interaction, dish_name: str, serving_count: int=1) -> None:
+    async def get_recipe(self, interaction: nextcord.Interaction, dish_name: str, serving_count: int = 1) -> None:
         print("INFO", f"{interaction.user.name} used {self}.{inspect.currentframe().f_code.co_name} at {datetime.datetime.now()}")
-        """use AI to find recipes that contain certain ingredients"""
-        
+
         try:
             await interaction.response.defer()
         except nextcord.errors.InteractionResponded:
@@ -84,14 +101,18 @@ class AICog(commands.Cog):
             response = ""
         else:
             messages = [
-                    {"role": "system", "content": f"You are a helpful sous chef preparing a concise recipe.\n===\nPart 1: List the Ingredients for {serving_count} servings\n- ingredient 1\n- ingredient 2\n===\nPart 2: Write concise Instructions\n1.\n2.\n3.\n===\nPart 3: short Description of dish\nPart 4: carefully concider a spice factor integer between one and ten"},
-                    {"role": "user", "content": f'Generate a step by step recipe for {dish_name}'}
-                ]
+                {"role": "system", "content": f"You are a helpful sous chef preparing a concise recipe.\n===\nPart 1: List the Ingredients for {serving_count} servings\n- ingredient 1\n- ingredient 2\n===\nPart 2: Write concise Instructions\n1.\n2.\n3.\n===\nPart 3: short Description of dish\nPart 4: carefully consider a spice factor integer between one and ten"},
+                {"role": "user", "content": f'Generate a step by step recipe for {dish_name}'}
+            ]
             response = self.generate_response(messages, 1000)
             recipe_info = parser.recipe_parser(dish_name, response)
             json_manager.save_json(f"src/recipes/{dish_name}.json", recipe_info)
 
+        difficulty = self.determine_difficulty(recipe_info)
+
         head_embed, instructions_embed = self.recipe_embedding.create_embeds(dish_name, recipe_info)
+
+        head_embed.description = f"Difficulty: **{difficulty}**"
 
         await interaction.followup.send(embed=head_embed)
         message = await interaction.followup.send(embed=instructions_embed)
@@ -102,7 +123,6 @@ class AICog(commands.Cog):
 
         # Start a background task to watch for reactions
         self.bot.loop.create_task(wait_for_options_reaction(self.bot, interaction, recipe_info, message))
-
 
 
 # =====================================================================================================
@@ -174,6 +194,7 @@ class AICog(commands.Cog):
 
         # await interaction.followup.send(embed=r_embed)
 #        await interaction.send("Coming soon!")
+
 
 
 def setup(bot: commands.Bot):
